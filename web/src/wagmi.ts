@@ -14,7 +14,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     publicProvider(),
   ],
 )
-const config = createConfig({
+export const config = createConfig({
   autoConnect: true,
   connectors: [
     new OktoConnector({

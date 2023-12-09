@@ -6,7 +6,7 @@ import { useWaitForTransaction } from 'wagmi'
 import {
   usePrepareWagmiMintExampleMint,
   useWagmiMintExampleMint,
-} from '../generated'
+} from '../src/generated'
 
 export function MintNFT() {
   const [tokenId, setTokenId] = useState('')

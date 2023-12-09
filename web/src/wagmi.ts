@@ -11,7 +11,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     publicProvider(),
   ],
-)
+);
 
 const oktoConnector = new OktoConnector({
   chains,

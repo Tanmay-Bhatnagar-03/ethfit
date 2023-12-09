@@ -15,6 +15,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
+
 export function MintNFT() {
   const [tokenURI, setTokenURI] = React.useState("");
   const [receiver, setReceiver] = React.useState("");
@@ -44,7 +45,7 @@ export function MintNFT() {
     functionName: "safeMint",
     args: [receiver ,tokenURI],
   });
-  
+
   const { data, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({

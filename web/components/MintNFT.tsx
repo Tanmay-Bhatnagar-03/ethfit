@@ -1,38 +1,72 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useWaitForTransaction } from 'wagmi'
+// import { useState } from 'react'
+// import { useWaitForTransaction } from 'wagmi'
 
+// import {
+//   usePrepareWagmiMintExampleMint,
+//   useWagmiMintExampleMint,
+// } from '../src/generated'
+
+import * as React from "react";
 import {
-  usePrepareWagmiMintExampleMint,
-  useWagmiMintExampleMint,
-} from '../generated'
+  usePrepareContractWrite,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 
 export function MintNFT() {
-  const [tokenId, setTokenId] = useState('')
+  const [tokenURI, setTokenURI] = React.useState("");
+  const [receiver, setReceiver] = React.useState("");
 
-  const {
-    config,
-    error: prepareError,
-    isError: isPrepareError,
-  } = usePrepareWagmiMintExampleMint({
-    args: tokenId ? [BigInt(tokenId)] : undefined,
-  })
-  const { data, error, isError, write } = useWagmiMintExampleMint(config)
+  const { config } = usePrepareContractWrite({
+    address: "0x631fb094399d362889c324472C83581B2BB45617",
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "uri",
+            type: "string",
+          },
+        ],
+        name: "safeMint",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      }
+    ],
+    functionName: "safeMint",
+    args: [receiver ,tokenURI],
+  });
+  
+  const { data, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
-  })
+  });
 
   return (
-    <div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        write?.();
+      }}
+    >
+      <label for="tokenId">Token ID</label>
       <input
+        id="tokenId"
         onChange={(e) => setTokenId(e.target.value)}
-        placeholder="Token ID (optional)"
+        placeholder="420"
         value={tokenId}
       />
-      <button disabled={!write || isLoading} onClick={() => write?.()}>
-        {isLoading ? 'Minting...' : 'Mint'}
+      <button disabled={!write || isLoading}>
+        {isLoading ? "Minting..." : "Mint"}
       </button>
       {isSuccess && (
         <div>
@@ -42,9 +76,6 @@ export function MintNFT() {
           </div>
         </div>
       )}
-      {(isPrepareError || isError) && (
-        <div>Error: {(prepareError || error)?.message}</div>
-      )}
-    </div>
-  )
+    </form>
+  );
 }

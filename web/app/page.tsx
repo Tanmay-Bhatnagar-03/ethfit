@@ -1,8 +1,8 @@
-import { Account } from "../src/components/Account";
-import { Connect } from "../src/components/Connect";
-import { Connected } from "../src/components/Connected";
-import { MintNFT } from "../src/components/MintNFT";
-import { NetworkSwitcher } from "../src/components/NetworkSwitcher";
+import { Account } from "../components/Account";
+import { Connect } from "../components/Connect";
+import { Connected } from "../components/Connected";
+import { MintNFT } from "../components/MintNFT";
+import { NetworkSwitcher } from "../components/NetworkSwitcher";
 
 export function Page() {
   return (
